@@ -1,7 +1,7 @@
 #! /bin/bash
 # @author liuyc (liuycsd@github)
 # @license GNU GPL v3 or later
-# @version 1.0
+# @version 1.0.1
 # (c)2014 liuyc (liuycsd@github)
 if test "$#" -gt 1;then
 	t="$(mktemp -t -d vsnpXXXX)"
@@ -9,7 +9,6 @@ if test "$#" -gt 1;then
 	d=$(echo "$i"|grep -m 1 -Po '[0-9:\.]{2,}'|awk -F':' '{print $1*3600+$2*60+$3;}')
 	v="$(echo $i|sed 's|Stream|\n|g'|grep -m 1 -Po 'Video:.*$')"
 	a="$(echo $i|sed 's|Stream|\n|g'|grep -m 1 -Po 'Audio:.*$')"
-	echo $v $a
 	z=$(echo "$i"|grep -m 1 -Po '[0-9][0-9]+x[0-9]*')
 	if [ "$5" != '' ] && [ $5 -gt 0 ];then
 		x=$5
@@ -38,13 +37,18 @@ if test "$#" -gt 1;then
 	for(( i=0 ;i<m; i++ ))
 	do
 		s=$(awk 'BEGIN{print '$d'*'$i'+'$d'/2}')
+		ss=$(awk 'BEGIN{printf "%d", '$s'}')
+		sm=$((ss/60))
+		sh=$((ss/60/60))
+		sm=$((sm%60))
+		ss=$((ss%60))
 		echo -e "Processing ($i/$m)\r"
-		ffmpeg -v 0 -y -ss "$s" -i "$1" -s "${x}x${y}" -frames:v 1 -vf 'drawtext=text='$s':fontsize='$((x/8))':fontcolor=blue@0.5:shadowy=2' "${t}/$(printf '%04d' $i).jpg" 2>&1 >/dev/null
+		ffmpeg -v 0 -y -ss "$s" -i "$1" -s "${x}x${y}" -frames:v 1 -vf "drawtext=text=\'${sh}:${sm}:${ss}\':fontsize=$((x/8)):fontcolor=blue@0.5:shadowy=2" "${t}/$(printf '%04d' $i).jpg" 2>&1 >/dev/null
 	done
 	echo -e "Montaging...\r"
 	montage  "${t}/"[0-9][0-9][0-9][0-9].jpg -tile "${r}x${c}" -geometry ${x}x${y}'+2+2' -background 'rgb(255,255,255)' "${t}/000t.jpg"
 	echo -e "Composing...\n"
-	convert -size "$((x*r+2*r-2))x$((y*c+2*c+x/3))" -gravity northwest -fill white -weight 2 -pointsize $((x/18)) -annotate '+2+2' "File:$1\n$v\n$a" xc:none "$2"
+	convert -size "$((x*r+2*r+8))x$((y*c+2*c+x/3))" -gravity northwest -fill white -weight 2 -pointsize $((x/18)) -annotate '+2+2' "File:$1\n$v\n$a" xc:none "$2"
 	composite -gravity southeast -geometry -0-0 "${t}/000t.jpg" "$2" "$2"
 	rm -r "$t"
 else
