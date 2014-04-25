@@ -16,28 +16,29 @@ import string
 import re
 class SDUgrade:
     def __init__(self):
-        self.login_url = 'http://jwxt.sdu.edu.cn:7777/pls/wwwbks/bks_login2.login'
-	self.grade_url = 'http://jwxt.sdu.edu.cn:7777/pls/wwwbks/bkscjcx.curscopre'
-	self.logout_url= 'http://jwxt.sdu.edu.cn:7777/pls/wwwbks/bks_login2.Logout'
-	self.cookie = cookielib.CookieJar()
-	self.getusr()
-	self.postdata=urllib.urlencode({'stuid':self.stuid, 'pwd':self.pwd})
-	self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookie))
+        hst = 'http://jwxt.sdu.edu.cn:7890/'
+        self.login_url = hst+'pls/wwwbks/bks_login2.login'
+        self.grade_url = hst+'pls/wwwbks/bkscjcx.curscopre'
+        self.logout_url= hst+'pls/wwwbks/bks_login2.Logout'
+        self.cookie = cookielib.CookieJar()
+        self.getusr()
+        self.postdata=urllib.urlencode({'stuid':self.stuid, 'pwd':self.pwd})
+        self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookie))
     def load(self):
         #f=open('t.html')
         #u=f.read().decode('gbk')
         #f.close()
-	req = urllib2.Request(url = self.login_url,data = self.postdata)
-	self.opener.open(req)
-	u=self.opener.open(self.grade_url).read().decode('gbk')
-	self.opener.open(self.logout_url)
+        req = urllib2.Request(url = self.login_url,data = self.postdata)
+        self.opener.open(req)
+        u=self.opener.open(self.grade_url).read().decode('gbk')
+        self.opener.open(self.logout_url)
         r=re.compile('<TR>.*?<p.*?<p.*?>(.*?)</p>.*?<p.*?>(.*?)</p>.*?<p.*?>(.*?)</p>.*?<p.*?>(.*?)</p>.*?<p.*?>(.*?)</p>.*?<p.*?>(.*?)</p>.*?<p.*?>(.*?)</p>.*?</TR>',re.S)
         self.lst=r.findall(u)
-	self.lst=list(self.lst)
-	i=0
-	for n in self.lst:
-	    self.lst[i]=list(n)
-	    i+=1
+        self.lst=list(self.lst)
+        i=0
+        for n in self.lst:
+            self.lst[i]=list(n)
+            i+=1
     def tograde(self,grade):
         if(grade==u'优秀'): grade=95
         elif(grade==u'良好'): grade=85
@@ -102,10 +103,10 @@ class SDUgrade:
         for n in self.pre_grade:
             while True:
                 print self.lst[n][1]
-        	i=raw_input()
-        	if(i!=''):
-        	    self.lst[n][5]=i
-        	    break
+                i=raw_input()
+                if(i!=''):
+                    self.lst[n][5]=i
+                    break
     def show(self):
         for i in self.lst:
             for j in i:
@@ -116,9 +117,9 @@ class SDUgrade:
         for n in t:
             while True:
                 i=raw_input(n)
-        	if(i!=''):
-        	    exec('self.'+n+'=i')
-        	    break
+                if(i!=''):
+                    exec('self.'+n+'=i')
+                    break
 #
 #Simple Demo:
 ##from sdugrade import SDUgrade
