@@ -1,12 +1,13 @@
 // ==UserScript==
-// @name	FLTRP SDU -- submit Helper
+// @name	山东大学新标准英语学习系统修复
 // @namespace	tag:liuyc,2013-11-18:1
-// @description	FLTRP ONLINE ENGLISH STUDY SYSTEM in SDU -- Submit Helper
+// @description	山东大学新标准英语学习系统修复，目前仅修复提交
 // @include	http://202.194.15.225/book/book*/dj*.php*
-// @version     0.2
+// @version     0.2.1
 // @grant	none
 // ==/UserScript==
-// TODO bind the Submit "Button" for this
+// @todo bind the Submit "Button" for this
+// @todo support other function
 var cfmdiv = document.getElementById("ConfirmDIV");
 cfmdiv.style.position="relative";
 cfmdiv.style.display="block";

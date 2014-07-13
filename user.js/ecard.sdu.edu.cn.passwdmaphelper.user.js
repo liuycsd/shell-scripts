@@ -1,8 +1,9 @@
 // ==UserScript==
-// @name	ecard.sdu.edu.cn Passwd Map Helper
-// @namespace	tag:liuyc,2013-11-10:1
-// @description	ecard.sdu.edu.cn Passwd Map Helper
+// @name	山东大学校园卡系统登录密码键盘显示脚本
+// @namespace	https://github.com/liuycsd/shell-scripts/tree/master/user.js
+// @description	山东大学校园卡系统登录密码键盘显示修正
 // @include	http://ecard.sdu.edu.cn/homeLogin.action
+// @version     0.2.1
 // @grant	none
 // ==/UserScript==
 document.getElementById("layermap").style.visibility="visible";
