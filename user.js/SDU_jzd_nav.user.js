@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        山东大学本科生奖助贷管理系统导航栏显示脚本
 // @namespace   https://github.com/liuycsd/shell-scripts/tree/master/user.js
-// @description 山东大学本科生奖助贷管理系统导航栏显示脚本
+// @description 显示山东大学本科生奖助贷管理系统导航栏下拉菜单
 // @include     http://211.86.56.237:8080/*
 // @version     0.2.1
 // @grant       none
